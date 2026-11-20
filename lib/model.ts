@@ -32,6 +32,22 @@
 // A protocol is pre-token when its record carries no market cap, no CoinGecko
 // id and no symbol. Live-token protocols are never ranked: they are set aside
 // with their market caps, which are facts, not a model.
+//
+// Why this shape, and what it cannot do:
+//   - The fit is deliberately pooled, not per category: category samples are
+//     too small to trust, and a pooled line keeps every protocol comparable.
+//   - The log-log form is the honest one for this data: multiples fall as TVL
+//     grows, and a straight line in levels would price the largest protocols
+//     far above anything their peers ever reached.
+//   - The clamps matter more than the slope. Without them the line would hand
+//     a $5M protocol a multiple above 1 and a $3B protocol one below 0.02.
+//   - Nothing here knows a protocol's name, its backers, or its points
+//     program. If a protocol's record changes, its rank changes with it;
+//     if the snapshot is replaced, the fit must be recomputed from the new
+//     snapshot before the board means anything.
+//   - The farm plans in this file are templates by category, not advice for
+//     a particular wallet. They state their own costs and times, and they
+//     assume the farmer reads the protocol's own pages before depositing.
 
 export interface SnapshotProtocol {
   slug: string;
